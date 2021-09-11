@@ -6,10 +6,12 @@ let postWebhook = (req, res) =>{
     let body = req.body;
 
   // Checks this is an event from a page subscription
+  console.log('object 1')
   if (body.object === 'page') {
-
+    console.log(body.entry)
     // Iterates over each entry - there may be multiple if batched
     body.entry.forEach(function(entry) {
+        
 
       // Gets the message. entry.messaging is an array, but 
       // will only ever contain one message, so we get index 0
@@ -77,8 +79,33 @@ function handleMessage(sender_psid, received_message) {
   }
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
-
-}
+    let response;
+    
+    // Get the payload for the postback
+    let payload = received_postback.payload;
+  
+    // Set the response based on the postback payload
+    if (payload === 'yes') {
+      response = { "text": "Thanks!" }
+    } else if (payload === 'no') {
+      response = { 
+          "text": "Oops, try sending another image.",
+          "quick_replies":[
+            {
+              "content_type":"text",
+              "title":"Red",
+              "image_url":"http://example.com/img/red.png"
+            },{
+              "content_type":"text",
+              "title":"Green",
+              "image_url":"http://example.com/img/green.png"
+            }
+          ]
+    }
+    }
+    // Send the message to acknowledge the postback
+    callSendAPI(sender_psid, response);
+  }
 
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
