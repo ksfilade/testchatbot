@@ -1,7 +1,7 @@
-import express from "express";
-import { route } from "express/lib/application";
-import homepageController from "../controllers/homepageController";
-import chatfacebookController from "../controllers/chatfacebookController"
+const express = require ("express");
+// import { route } from "express/lib/application";
+const homepageController = require ("../controllers/homepageController");
+const chatfacebookController = require ("../controllers/chatfacebookController")
 /*
 init all web routes
  */
